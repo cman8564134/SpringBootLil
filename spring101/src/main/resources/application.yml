@@ -1,0 +1,73 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    initialization-mode: embedded
+    platform: postgres
+    username: SpringBootUser
+    password: 123456
+    url: jdbc:postgresql://localhost:5432/springboot
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: none
+logging:
+  level:
+    org:
+      hibernate:
+        engine:
+        jdbc:
+          env:
+            internal:
+              LobCreatorBuilderImpl: error
+      springframework:
+        jdbc:
+          datasource:
+            init:
+              ScriptUtils: debug
+cthye:
+  logging:
+    logger-name: LinkedIn-Cthye
+server:
+  port: 8000
+  ssl:
+    key-store: spring101/src/main/resources/keystore.jks
+    key-alias: spring101
+    key-store-password: password
+    key-store-type: JKS
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    initialization-mode: embedded
+    platform: postgres
+    username: SpringBootUser
+    password: 123456
+    url: jdbc:postgresql://localhost:5432/springboot
+  jpa:
+    database: postgresql
+logging:
+  level:
+    org:
+      hibernate:
+        engine:
+        jdbc:
+          env:
+            internal:
+              LobCreatorBuilderImpl: error
+      springframework:
+        jdbc:
+          datasource:
+            init:
+              ScriptUtils: debug
+
