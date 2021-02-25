@@ -1,8 +1,7 @@
 package com.cthye.lil.spring101.web;
 
 import com.cthye.lil.spring101.business.domain.GuestDetail;
-import com.cthye.lil.spring101.business.domain.RoomReservation;
-import com.cthye.lil.spring101.business.service.ReservationService;
+import com.cthye.lil.spring101.business.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,16 +15,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/guests")
 public class GuestDetailWebController {
-    private final ReservationService reservationService;
+    private final GuestService guestService;
 
     @Autowired
-    public GuestDetailWebController(ReservationService reservationService) {
-        this.reservationService = reservationService;
+    public GuestDetailWebController(GuestService guestService) {
+        this.guestService = guestService;
     }
 
     @GetMapping
     public String getGuests(Model model) {
-        List<GuestDetail> guestDetails = this.reservationService.getAllGuests();
+        List<GuestDetail> guestDetails = this.guestService.getAllGuests();
         model.addAttribute("guestsDetails", guestDetails);
         return "guests";
     }

@@ -12,6 +12,9 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: none
+  data:
+    rest:
+      basePath: /apix
 logging:
   level:
     org:

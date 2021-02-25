@@ -5,7 +5,7 @@ import com.cthye.lil.spring101.business.domain.RoomReservation;
 import com.cthye.lil.spring101.data.entity.Guest;
 import com.cthye.lil.spring101.data.entity.Reservation;
 import com.cthye.lil.spring101.data.entity.Room;
-import com.cthye.lil.spring101.data.repository.GuestRespository;
+import com.cthye.lil.spring101.data.repository.GuestDetailRepository;
 import com.cthye.lil.spring101.data.repository.ReservationRepository;
 import com.cthye.lil.spring101.data.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,11 @@ import java.util.*;
 @Service
 public class ReservationService {
     private final RoomRepository roomRepository;
-    private final GuestRespository guestRepository;
+    private final GuestDetailRepository guestRepository;
     private final ReservationRepository reservationRepository;
 
     @Autowired
-    public ReservationService(RoomRepository roomRepository, GuestRespository guestRepository, ReservationRepository reservationRepository) {
+    public ReservationService(RoomRepository roomRepository, GuestDetailRepository guestRepository, ReservationRepository reservationRepository) {
         this.roomRepository = roomRepository;
         this.guestRepository = guestRepository;
         this.reservationRepository = reservationRepository;
