@@ -1,5 +1,7 @@
 package com.cthye.lil.spring101.data.entity;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
@@ -13,13 +15,17 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "ROOM_ID")
+    @OneToOne
+    @JoinColumn(name = "ROOM_ID")
     @NotBlank(message = "FK room_id constraint cannot be empty")
-    private long room_id;
+    @RestResource(path = "rooms", rel="rooms")
+    private Room room;
 
-    @Column(name = "GUEST_ID")
+    @OneToOne
+    @JoinColumn(name = "GUEST_ID")
     @NotBlank(message = "FK guest_id constraint cannot be empty")
-    private long guest_id;
+    @RestResource(path = "guests", rel="guests")
+    private Guest guest;
 
     @Column(name = "RES_DATE")
     private Date date;
@@ -32,20 +38,20 @@ public class Reservation {
         this.id = id;
     }
 
-    public long getRoom_id() {
-        return room_id;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoom_id(long room_id) {
-        this.room_id = room_id;
+    public void setRoom(Room room_id) {
+        this.room = room_id;
     }
 
-    public long getGuest_id() {
-        return guest_id;
+    public Guest getGuest() {
+        return guest;
     }
 
-    public void setGuest_id(long guest_id) {
-        this.guest_id = guest_id;
+    public void setGuest(Guest guest_id) {
+        this.guest = guest_id;
     }
 
     public Date getDate() {

@@ -20,7 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/api/*","/apix/*", "/api/*/*", "/apix/*/*").permitAll()
+        http.authorizeRequests().antMatchers("/", "/api/*","/apix/*", "/api/*/*", "/apix/*/*", "/apix/*/*/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -29,6 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+        http.cors().and().csrf().disable();
     }
 
     @Autowired
