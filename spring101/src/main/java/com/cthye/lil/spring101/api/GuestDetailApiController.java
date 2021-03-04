@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -36,6 +37,7 @@ public class GuestDetailApiController {
 
     @PostMapping("/guests")
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional //should actually be added to service instead of controller because we can handle exception here but there's no other POST method.
     public void createNewGuest(@RequestBody @Validated Guest guest){
         if(! isDuplicateGuest(guest)) {
             guestRepository.save(guest);
