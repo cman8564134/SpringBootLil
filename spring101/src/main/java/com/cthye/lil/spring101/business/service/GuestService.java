@@ -25,7 +25,7 @@ public class GuestService {
             GuestDetail guestDetail = new GuestDetail();
             guestDetail.setGuest_id(guest.getId());
             guestDetail.setEmail(guest.getEmail());
-            guestDetail.setFull_name(guest.getLast_name() + ' ' + guest.getFirst_name());
+            guestDetail.setFull_name(guest.getLastname() + ' ' + guest.getFirstname());
             guestDetail.setPhone_number(guest.getPhone_number());
             guestDetails.add(guestDetail);
         });
@@ -37,6 +37,17 @@ public class GuestService {
             return o1.getFull_name().compareTo(o2.getFull_name());
         });
         return guestDetails;
+    }
+
+    public GuestDetail getGuest(Long guestID){
+        Guest guest = this.guestRepository.findById(guestID).get();
+        GuestDetail guestDetail = new GuestDetail();
+        guestDetail.setGuest_id(guest.getId());
+        guestDetail.setEmail(guest.getEmail());
+        guestDetail.setFull_name(guest.getLastname() + ' ' + guest.getFirstname());
+        guestDetail.setPhone_number(guest.getPhone_number());
+        return guestDetail;
+
     }
 
 }

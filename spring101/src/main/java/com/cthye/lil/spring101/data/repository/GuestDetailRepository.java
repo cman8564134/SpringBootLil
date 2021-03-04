@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface GuestDetailRepository extends JpaRepository<Guest, Long> {
     Page<Guest> findGuestByCountry(@Param("country")String country, Pageable pageable);
 
+    Guest findByEmail(String email);
 }

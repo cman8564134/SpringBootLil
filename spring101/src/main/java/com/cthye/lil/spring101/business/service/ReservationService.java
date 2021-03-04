@@ -34,7 +34,7 @@ public class ReservationService {
             GuestDetail guestDetail = new GuestDetail();
             guestDetail.setGuest_id(guest.getId());
             guestDetail.setEmail(guest.getEmail());
-            guestDetail.setFull_name(guest.getLast_name() + ' ' + guest.getFirst_name());
+            guestDetail.setFull_name(guest.getLastname() + ' ' + guest.getFirstname());
             guestDetail.setPhone_number(guest.getPhone_number());
             guestDetails.add(guestDetail);
         });
@@ -66,8 +66,8 @@ public class ReservationService {
             RoomReservation roomReservation = roomReservationMap.get(reservation.getId());
             roomReservation.setDate(date);
             Guest guest = this.guestRepository.findById(reservation.getId()).get();
-            roomReservation.setFirstName(guest.getFirst_name());
-            roomReservation.setLastName(guest.getLast_name());
+            roomReservation.setFirstName(guest.getFirstname());
+            roomReservation.setLastName(guest.getLastname());
             roomReservation.setGuestId(guest.getId());
         });
         List<RoomReservation> roomReservations = new ArrayList<>();

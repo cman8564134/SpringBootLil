@@ -2,6 +2,7 @@ package com.cthye.lil.spring101.data.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -10,14 +11,16 @@ public class Guest {
 
     @Id
     @Column(name = "GUEST_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "FIRST_NAME")
-    private String first_name;
+    @NotBlank(message = "Required Guest FName ")
+    private String firstname;
 
     @Column(name = "LAST_NAME")
-    private String last_name;
+    @NotBlank(message = "Required Guest LName ")
+    private String lastname;
 
     @Column(name = "EMAIL_ADDRESS")
     @NotBlank(message = "Required Guest Email ")
@@ -36,28 +39,28 @@ public class Guest {
     @Column(name = "PHONE_NUMBER")
     private String phone_number;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstname(String first_name) {
+        this.firstname = first_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastname(String last_name) {
+        this.lastname = last_name;
     }
 
     public String getEmail() {
