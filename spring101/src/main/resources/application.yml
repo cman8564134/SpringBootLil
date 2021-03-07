@@ -29,6 +29,9 @@ logging:
           datasource:
             init:
               ScriptUtils: debug
+  file:
+    path: spring101/logs
+    name: ${logging.file.path}/myapp.log
 cthye:
   logging:
     logger-name: LinkedIn-Cthye

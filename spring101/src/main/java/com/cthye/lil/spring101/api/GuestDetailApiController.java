@@ -4,6 +4,8 @@ import com.cthye.lil.spring101.business.domain.GuestDetail;
 import com.cthye.lil.spring101.business.service.GuestService;
 import com.cthye.lil.spring101.data.entity.Guest;
 import com.cthye.lil.spring101.data.repository.GuestDetailRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import java.util.List;
 public class GuestDetailApiController {
     private final GuestService guestService;
     private final GuestDetailRepository guestRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(GuestDetailApiController.class);
 
     @Autowired
     public GuestDetailApiController(GuestService guestService, GuestDetailRepository guestDetailRepository) {
@@ -27,11 +30,13 @@ public class GuestDetailApiController {
 
     @GetMapping("/guests")
     public List<GuestDetail> getAllGuests(){
+        LOGGER.debug("Getting all guests");
         return this.guestService.getAllGuests();
     }
 
     @GetMapping("/guests/{guestId}")
     public GuestDetail getSpecificGuest(@PathVariable("guestId") Long guestID){
+        LOGGER.debug(String.format("getting %s information",Long.toString(guestID)));
         return this.guestService.getGuest(guestID);
     }
 
@@ -39,8 +44,10 @@ public class GuestDetailApiController {
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional //should actually be added to service instead of controller because we can handle exception here but there's no other POST method.
     public void createNewGuest(@RequestBody @Validated Guest guest){
+        LOGGER.debug("Saving guest..");
         if(! isDuplicateGuest(guest)) {
             guestRepository.save(guest);
+            LOGGER.debug("Guest saved");
         } else {
             throw new GuestInvalidInputException("Duplicated guest");
         }
