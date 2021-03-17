@@ -1,5 +1,6 @@
 package com.cthye.lil.spring101.configuration;
 
+import com.cthye.lil.spring101.business.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +16,12 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/", "/api/*","/apix/*", "/api/*/*", "/apix/*/*", "/apix/*/*/*").permitAll()
+                //unit test
+                .antMatchers("/reservations").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

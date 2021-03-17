@@ -43,4 +43,10 @@ public class GuestDetail {
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        GuestDetail guest = ((GuestDetail) obj);
+        return guest_id == guest.guest_id && full_name.equals(guest.full_name) && (email == null || email.equals(guest.email));
+    }
 }

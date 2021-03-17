@@ -55,13 +55,19 @@ spring:
     activate:
       on-profile: test
   datasource:
-    initialization-mode: embedded
-    platform: postgres
-    username: SpringBootUser
-    password: 123456
-    url: jdbc:postgresql://localhost:5432/springboot
+    username: sa
+    password: password
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
   jpa:
-    database: postgresql
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  h2:
+    console:
+      enabled: true
 logging:
   level:
     org:
