@@ -49,6 +49,11 @@ management:
     web:
       exposure:
         include: "*"
+security:
+  jwt:
+    token:
+      secret-key: some-secret-key
+      expiration: 600000
 ---
 spring:
   config:

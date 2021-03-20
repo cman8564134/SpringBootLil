@@ -11,7 +11,8 @@ public class Guest {
 
     @Id
     @Column(name = "GUEST_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guest_guest_id_seq")
+    @SequenceGenerator(name = "guest_guest_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "FIRST_NAME")

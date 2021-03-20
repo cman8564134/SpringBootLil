@@ -479,3 +479,30 @@ VALUES ('Young', 'Judith', 'jyoung11@goodreads.com', 'United States', '2 Sachtje
 INSERT INTO RESERVATION (ROOM_ID, GUEST_ID, RES_DATE)
 VALUES ((SELECT ROOM_ID FROM ROOM WHERE ROOM_NUMBER = 'C2'), (SELECT GUEST_ID FROM GUEST WHERE LAST_NAME = 'Young'),
         '2020-01-01');
+
+-- USER
+-- non-encrypted password: letmein
+INSERT INTO security_user (username, password, first_name, last_name) VALUES
+('admin', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Administrator', 'Adminstrator'),
+('csr_jane', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Jane', 'Doe'),
+('csr_mark', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Mark', 'Smith'),
+('wally', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Walter', 'Adams'),
+('ruser', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Rest', 'User');
+
+-- ROLES (Spring Security searches ROLE_ prefix by default so we need to add the same prefix to db)
+
+INSERT INTO security_role (role_name, description) VALUES ('ROLE_ADMIN', 'Administrator');
+INSERT INTO security_role (role_name, description) VALUES ('ROLE_CSR', 'Customer Service Representative');
+INSERT INTO security_role (role_name, description) VALUES ('ROLE_USER', 'User');
+INSERT INTO security_role (role_name, description) VALUES ('ROLE_ENDPOINT_ADMIN', 'API User');
+
+INSERT INTO user_role(user_id, role_id) VALUES
+(1, 1), -- give admin ROLE_ADMIN
+(2, 2),  -- give Jane ROLE_CSR
+(3, 2),  -- give Mark ROLE_CSR
+(4, 1),  -- give Wally ROLE_ADMIN
+(4, 2),  -- give Wally ROLE_CSR
+(5, 1),  -- give ruser ROLE_ADMIN
+(5, 2),  -- give ruser ROLE_CSR
+(5, 3),  -- give ruser ROLE_User
+(5, 4);  -- give ruser ROLE_ENDPOINT_ADMIN

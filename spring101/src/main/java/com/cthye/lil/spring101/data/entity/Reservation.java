@@ -12,7 +12,8 @@ public class Reservation {
 
     @Id
     @Column(name = "RESERVATION_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_reservation_id_seq")
+    @SequenceGenerator(name = "reservation_reservation_id_seq", allocationSize = 1)
     private long id;
 
     @OneToOne
