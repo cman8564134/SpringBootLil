@@ -6,6 +6,7 @@ import com.cthye.lil.spring101.data.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/users")
@@ -21,9 +23,12 @@ public class UserApiController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private MessageSource messageSource;
 
     @PostMapping("/signin")
     public String login(@RequestBody @Valid LoginDto loginDto) {
+        LOGGER.debug("Signing in user: " + loginDto.getUsername());
         return userService.signin(loginDto.getUsername(), loginDto.getPassword()).orElseThrow(()->
                 new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));
     }
@@ -32,9 +37,12 @@ public class UserApiController {
     //Uses Spring Web filter to filter who can access these methods
     @PreAuthorize("hasRole('ENDPOINT_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public User signup(@RequestBody @Valid LoginDto loginDto){
+    public User signup(@RequestBody @Valid LoginDto loginDto, @RequestParam(required = false, name = "lang") String languageLocale){
+        LOGGER.debug("Signing up user: " + loginDto.getUsername());
         return userService.signup(loginDto.getUsername(), loginDto.getPassword(), loginDto.getFirstName(),
-                loginDto.getLastName()).orElseThrow(() -> new HttpServerErrorException(HttpStatus.BAD_REQUEST,"User already exists"));
+                loginDto.getLastName()).orElseThrow(() -> new HttpServerErrorException(HttpStatus.BAD_REQUEST,
+                messageSource.getMessage("api.message.already.exist",null, "User Already Exist", languageLocale != null? Locale.forLanguageTag(languageLocale):null)
+        ));
     }
 
     @GetMapping

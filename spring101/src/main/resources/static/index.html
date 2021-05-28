@@ -26,14 +26,14 @@
     <div class="page-header">
         <h1>Select an option</h1>
     </div>
-    <a href="/reservations" class="btn btn-default">Reservations</a>
+    <a href="/reservations" th:text ="#{lang.eng}" class="btn btn-default">Reservations</a>
     <a href="/guests" class="btn btn-default">Guests</a>
 </div>
 <footer class="footer navbar-inverse navbar-fixed-bottom">
     <div class="container">
         <div class="row">
             <div class="col-md-4"></div>
-            <div class="col-md-4"><p class="text-muted">@Copyright 2019 Frank Moley</p></div>
+            <div class="col-md-4"><p class="text-muted" th:text = "#{footer.copyright.message}"></div>
         </div>
     </div>
 </footer>

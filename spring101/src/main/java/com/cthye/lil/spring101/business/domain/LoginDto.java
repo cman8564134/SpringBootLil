@@ -1,9 +1,11 @@
 package com.cthye.lil.spring101.business.domain;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class LoginDto {
-    @NotNull
+    @NotBlank(message = "{validation.message.username}")
+    @NotNull(message = "{validation.message.username}")
     private String username;
 
     @NotNull
