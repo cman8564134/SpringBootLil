@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequestMapping("/api")
@@ -28,8 +29,8 @@ public class RoomReservationApiController {
     @GetMapping("/reservations")
     @Timed
     @LogMethodCount
-    public List<RoomReservation> getReservations(@RequestParam(value = "date", required = false) String dateString) {
+    public Callable<List<RoomReservation>> getReservations(@RequestParam(value = "date", required = false) String dateString) {
         Date date = DateUtils.createDateFromDateString(dateString);
-        return this.reservationService.getRoomReservationsForDate(date);
+        return () ->{return this.reservationService.getRoomReservationsForDate(date);};
     }
 }

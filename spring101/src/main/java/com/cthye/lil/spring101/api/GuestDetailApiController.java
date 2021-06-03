@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequestMapping("/api")
@@ -29,9 +31,10 @@ public class GuestDetailApiController {
     }
 
     @GetMapping("/guests")
-    public List<GuestDetail> getAllGuests(){
+    public Callable<List<GuestDetail>> getAllGuests(HttpServletRequest request){
         LOGGER.debug("Getting all guests");
-        return this.guestService.getAllGuests();
+        LOGGER.debug("is Async Supported:" + request.isAsyncSupported());
+        return () ->{ return this.guestService.getAllGuests();};
     }
 
     @GetMapping("/guests/{guestId}")

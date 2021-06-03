@@ -12,9 +12,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequestMapping("/api/users")
@@ -48,7 +50,8 @@ public class UserApiController {
     @GetMapping
     //Uses Spring Web filter to filter who can access these methods
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<User> getAllUsers() {
-        return userService.getAll();
+    public Callable<List<User>> getAllUsers(HttpServletRequest request) {
+        LOGGER.debug("is Async Supported:" + request.isAsyncSupported());
+        return () ->{ return userService.getAll();};
     }
 }
