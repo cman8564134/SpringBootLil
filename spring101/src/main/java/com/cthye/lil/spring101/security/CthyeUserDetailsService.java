@@ -14,11 +14,15 @@ import static org.springframework.security.core.userdetails.User.withUsername;
 
 @Component
 public class CthyeUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
 
     @Autowired
-    JwtProvider jwtProvider;
+    public CthyeUserDetailsService(UserRepository userRepository, JwtProvider jwtProvider ) {
+        this.userRepository = userRepository;
+        this.jwtProvider = jwtProvider;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

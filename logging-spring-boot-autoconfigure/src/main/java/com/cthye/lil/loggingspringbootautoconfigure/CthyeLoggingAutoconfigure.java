@@ -12,8 +12,12 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(CthyeLoggingProperties.class)
 public class CthyeLoggingAutoconfigure {
 
+    private final CthyeLoggingProperties properties;
+
     @Autowired
-    private CthyeLoggingProperties properties;
+    public CthyeLoggingAutoconfigure(CthyeLoggingProperties properties) {
+        this.properties = properties;
+    }
 
     @Bean
     public LoggableAspect loggableAspect(){

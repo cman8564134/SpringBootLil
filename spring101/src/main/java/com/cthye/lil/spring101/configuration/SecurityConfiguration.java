@@ -21,8 +21,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //this enabled @Preauthorize annotation
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final CthyeUserDetailsService userService;
+
     @Autowired
-    private CthyeUserDetailsService userService;
+    public SecurityConfiguration(CthyeUserDetailsService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

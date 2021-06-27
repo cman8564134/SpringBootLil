@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 @RestController
@@ -23,10 +24,14 @@ import java.util.concurrent.Callable;
 public class UserApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserApiController.class);
 
+    private final UserService userService;
+    private final MessageSource messageSource;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private MessageSource messageSource;
+    public UserApiController(UserService userService, MessageSource messageSource) {
+        this.userService = userService;
+        this.messageSource = messageSource;
+    }
 
     @PostMapping("/signin")
     public String login(@RequestBody @Valid LoginDto loginDto) {
@@ -41,9 +46,9 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.CREATED)
     public User signup(@RequestBody @Valid LoginDto loginDto, @RequestParam(required = false, name = "lang") String languageLocale){
         LOGGER.debug("Signing up user: " + loginDto.getUsername());
-        return userService.signup(loginDto.getUsername(), loginDto.getPassword(), loginDto.getFirstName(),
-                loginDto.getLastName()).orElseThrow(() -> new HttpServerErrorException(HttpStatus.BAD_REQUEST,
-                messageSource.getMessage("api.message.already.exist",null, "User Already Exist", languageLocale != null? Locale.forLanguageTag(languageLocale):null)
+        return userService.signup(loginDto.getUsername(), loginDto.getPassword(), loginDto.getFirstName(),loginDto.getLastName())
+                .orElseThrow(() -> new HttpServerErrorException(HttpStatus.BAD_REQUEST,
+                        Objects.requireNonNull(messageSource.getMessage("api.message.already.exist", null, "User Already Exist", languageLocale != null ? Locale.forLanguageTag(languageLocale) : null))
         ));
     }
 
