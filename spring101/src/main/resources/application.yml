@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    initialization-mode: embedded
+    initialization-mode: never
     platform: postgres
     username: SpringBootUser
     password: 123456
@@ -15,6 +15,9 @@ spring:
   data:
     rest:
       basePath: /apix
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+    contexts: dev
 logging:
   level:
     org:
@@ -43,7 +46,6 @@ server:
     key-store-password: password
     key-store-type: JKS
     enabled: true
-
 management:
   endpoints:
     web:

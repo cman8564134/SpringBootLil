@@ -1,3 +1,9 @@
+--liquibase formatted sql
+
+--changeset cthye:v1.1-1 context:dev
+--comment: Insert sample values into Room table
+--preconditions onFail:HALT onError:HALT
+--precondition-sql-check expectedResult:t SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name   = 'room');
 INSERT INTO ROOM (NAME, ROOM_NUMBER, BED_INFO)
 VALUES ('Piccadilly', 'P1', '1Q');
 INSERT INTO ROOM (NAME, ROOM_NUMBER, BED_INFO)
@@ -54,7 +60,12 @@ INSERT INTO ROOM (NAME, ROOM_NUMBER, BED_INFO)
 VALUES ('Manchester', 'M3', '1K');
 INSERT INTO ROOM (NAME, ROOM_NUMBER, BED_INFO)
 VALUES ('Manchester', 'M4', '1K');
+--rollback TRUNCATE TABLE ROOM;
 
+--changeset cthye:v1.1-2 context:dev
+--comment: Insert sample values into GUEST table
+--preconditions onFail:HALT onError:HALT
+--precondition-sql-check expectedResult:t SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'guest');
 INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER)
 VALUES ('Adams', 'Roy', 'radams1v@xinhuanet.com', 'United States', '2872 Marquette Street', 'NY', '1-(235)314-9823');
 INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER)
@@ -475,34 +486,59 @@ INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE
 VALUES ('Wright', 'Joan', 'jwright1q@phoca.cz', 'Moldova', '55 Dawn Parkway', '', '7-(830)749-3794');
 INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER)
 VALUES ('Young', 'Judith', 'jyoung11@goodreads.com', 'United States', '2 Sachtjen Parkway', 'WV', '9-(659)879-6466');
+--rollback TRUNCATE TABLE ROOM;
 
+--changeset cthye:v1.1-3 context:dev
+--comment: Insert sample values into RESERVATION table
+--preconditions onFail:HALT onError:HALT
+--precondition-sql-check expectedResult:t SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'reservation');
 INSERT INTO RESERVATION (ROOM_ID, GUEST_ID, RES_DATE)
 VALUES ((SELECT ROOM_ID FROM ROOM WHERE ROOM_NUMBER = 'C2'), (SELECT GUEST_ID FROM GUEST WHERE LAST_NAME = 'Young'),
         '2020-01-01');
+--rollback TRUNCATE TABLE RESERVATION;
 
--- USER
--- non-encrypted password: letmein
+--changeset cthye:v1.1-4 context:dev
+--comment: Insert sample values into security_user table where non-encrypted password is letmein
+--preconditions onFail:HALT onError:HALT
+--precondition-sql-check expectedResult:t SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'security_user');
 INSERT INTO security_user (username, password, first_name, last_name) VALUES
 ('admin', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Administrator', 'Adminstrator'),
 ('csr_jane', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Jane', 'Doe'),
 ('csr_mark', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Mark', 'Smith'),
 ('wally', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Walter', 'Adams'),
 ('ruser', '$2a$12$ZhGS.zcWt1gnZ9xRNp7inOvo5hIT0ngN7N.pN939cShxKvaQYHnnu', 'Rest', 'User');
+--rollback TRUNCATE TABLE security_user;
 
--- ROLES (Spring Security searches ROLE_ prefix by default so we need to add the same prefix to db)
-
+--changeset cthye:v1.1-5 context:dev
+--comment: Insert sample values into security_role table. Spring Security searches ROLE_ prefix by default so we need to add the same prefix to db
+--preconditions onFail:HALT onError:HALT
+--precondition-sql-check expectedResult:t SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'security_role');
 INSERT INTO security_role (role_name, description) VALUES ('ROLE_ADMIN', 'Administrator');
 INSERT INTO security_role (role_name, description) VALUES ('ROLE_CSR', 'Customer Service Representative');
 INSERT INTO security_role (role_name, description) VALUES ('ROLE_USER', 'User');
 INSERT INTO security_role (role_name, description) VALUES ('ROLE_ENDPOINT_ADMIN', 'API User');
+--rollback TRUNCATE TABLE security_role;
 
+--changeset cthye:v1.1-6 context:dev
+--comment: Insert sample values into user_role table.
+--preconditions onFail:HALT onError:HALT
+--precondition-sql-check expectedResult:t SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'user_role');
 INSERT INTO user_role(user_id, role_id) VALUES
-(1, 1), -- give admin ROLE_ADMIN
-(2, 2),  -- give Jane ROLE_CSR
-(3, 2),  -- give Mark ROLE_CSR
-(4, 1),  -- give Wally ROLE_ADMIN
-(4, 2),  -- give Wally ROLE_CSR
-(5, 1),  -- give ruser ROLE_ADMIN
-(5, 2),  -- give ruser ROLE_CSR
-(5, 3),  -- give ruser ROLE_User
-(5, 4);  -- give ruser ROLE_ENDPOINT_ADMIN
+--comment: give admin ROLE_ADMIN
+(1, 1),
+--comment: give Jane ROLE_CSR
+(2, 2),
+--comment: give Mark ROLE_CSR
+(3, 2),
+--comment: give Wally ROLE_ADMIN
+(4, 1),
+--comment: give Wally ROLE_CSR
+(4, 2),
+--comment: give ruser ROLE_ADMIN
+(5, 1),
+--comment: give ruser ROLE_CSR
+(5, 2),
+--comment: give ruser ROLE_User
+(5, 3),
+--comment: give ruser ROLE_ENDPOINT_ADMIN
+(5, 4);
